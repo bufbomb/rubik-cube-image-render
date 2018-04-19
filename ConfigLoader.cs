@@ -17,6 +17,11 @@ namespace RubikCubeImageRender
                 {
                     break;
                 }
+                if (line.StartsWith("#"))
+                {
+                    line = sr.ReadLine();
+                    continue;
+                }
                 String[] pointStrings = line.Split(';');
                 for (int i = 0; i < pointStrings.Length; i++)
                 {
@@ -78,7 +83,6 @@ namespace RubikCubeImageRender
                 while (model != null)
                 {
                     models.Add(model.Name, model);
-                    model.PrintDebug();
                     model = readModel(sr);
                 }
             }
