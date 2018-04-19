@@ -7,12 +7,21 @@ namespace RubikCubeImageRender
 {
     class Program
     {
+        static Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
+
+        static void initColorMap()
+        {
+            colorMap['R'] = Color.Red;
+            colorMap['G'] = Color.LawnGreen;
+            colorMap['B'] = Color.BlueViolet;
+            colorMap['O'] = Color.Orange;
+            colorMap['Y'] = Color.Yellow;
+            colorMap['W'] = Color.White;
+            colorMap['X'] = Color.Gray;
+        }
+
         static void drawAndSave(string filename, Model model, string colorCode)
         {
-            Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
-            colorMap['R'] = Color.Red;
-            colorMap['G'] = Color.Green;
-            colorMap['B'] = Color.Blue;
             int width = 400;
             int height = 400;
 
@@ -42,7 +51,7 @@ namespace RubikCubeImageRender
 
         static void Main(string[] args)
         {
-            //readModels();
+            initColorMap();
             Dictionary<String, Model> models = ConfigLoader.readModels();
             using (StreamReader sr = new StreamReader("rubik.dat"))
             {
