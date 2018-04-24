@@ -8,6 +8,10 @@ namespace RubikCubeImageRender
     class Program
     {
         static Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
+        
+        // Make it configurable
+        static int width = 400;
+        static int height = 400;
 
         static void initColorMap()
         {
@@ -22,31 +26,41 @@ namespace RubikCubeImageRender
 
         static void drawAndSave(string filename, Model model, string colorCode)
         {
-            int width = 400;
-            int height = 400;
-
             // Create a Bitmap object from a file.
             Bitmap bitmap = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(bitmap);
-
+            Pen boardPen = new Pen(Color.DarkGray, 1);
 
             for (int i = 0; i < colorCode.Length; i++)
             {
                 Char colorChar = colorCode[i];
                 Color color = colorMap[colorChar];
                 Point[] points = model.GetPolygen(i);
-                Point[] scaledPoints = new Point[points.Length];
-                for (int pointIndex = 0; pointIndex < points.Length; pointIndex++)
-                {
-                    Point point = points[pointIndex];
-                    Point scaledPoint = new Point(point.X * (width / 200), point.Y * (height / 200));
-                    scaledPoints[pointIndex] = scaledPoint;
-                }
+                Point[] scaledPoints = GetScaledPoints(points);
                 graphics.FillPolygon(new SolidBrush(color), scaledPoints);
+            }
+
+            for (int i = 0; i < model.GetPolygenCount(); i++)
+            {
+                Point[] points = model.GetPolygen(i);
+                Point[] scaledPoints = GetScaledPoints(points);
+                graphics.DrawPolygon(boardPen, scaledPoints);
             }
 
             // Save
             bitmap.Save(filename);
+        }
+
+        static Point[] GetScaledPoints(Point[] points)
+        {
+            Point[] scaledPoints = new Point[points.Length];
+            for (int pointIndex = 0; pointIndex < points.Length; pointIndex++)
+            {
+                Point point = points[pointIndex];
+                Point scaledPoint = new Point(point.X * (width / 200), point.Y * (height / 200));
+                scaledPoints[pointIndex] = scaledPoint;
+            }
+            return scaledPoints;
         }
 
         static void Main(string[] args)

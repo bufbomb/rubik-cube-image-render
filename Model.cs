@@ -32,6 +32,11 @@ namespace RubikCubeImageRender
             }
         }
 
+        public int GetPolygenCount()
+        {
+            return polygens.Count;
+        }
+
         public void PrintDebug()
         {
             Console.WriteLine(name + ":" + polygens.Count);
