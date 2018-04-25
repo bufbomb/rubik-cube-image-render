@@ -74,10 +74,10 @@ namespace RubikCubeImageRender
             return model;
         }
 
-        public static Dictionary<String, Model> readModels()
+        public static Dictionary<String, Model> readModels(string filename)
         {
             Dictionary<String, Model> models = new Dictionary<string, Model>();
-            using (StreamReader sr = new StreamReader("models.cfg"))
+            using (StreamReader sr = new StreamReader(filename))
             {
                 Model model = readModel(sr);
                 while (model != null)

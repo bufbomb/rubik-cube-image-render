@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ConfigLoader.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="Option.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

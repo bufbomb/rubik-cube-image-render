@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandLine;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -65,9 +66,15 @@ namespace RubikCubeImageRender
 
         static void Main(string[] args)
         {
+            CommandLine.Parser.Default.ParseArguments<Options>(args)
+                .WithParsed<Options>(opts => RunOptionsAndReturnExitCode(opts));
+        }   
+
+        private static void RunOptionsAndReturnExitCode(Options opts)
+        {
             initColorMap();
-            Dictionary<String, Model> models = ConfigLoader.readModels();
-            using (StreamReader sr = new StreamReader("rubik.dat"))
+            Dictionary<String, Model> models = ConfigLoader.readModels(opts.ModelFile);
+            using (StreamReader sr = new StreamReader(opts.DataFile))
             {
                 string line = sr.ReadLine();
                 while (line != null)
@@ -80,8 +87,6 @@ namespace RubikCubeImageRender
                     }
                     string filename = metaData[0].Trim();
                     string modelName = metaData[1].Trim();
-                    Console.WriteLine(modelName);
-                    Console.WriteLine(modelName.Equals("model_1"));
                     Model model = models[modelName];
                     if (model == null)
                     {
@@ -91,7 +96,6 @@ namespace RubikCubeImageRender
                     line = sr.ReadLine();
                 }
             }
-            
         }
     }
 }
