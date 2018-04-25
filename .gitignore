@@ -7,3 +7,9 @@ x64/
 
 # User config
 *.csproj.user
+
+# VS cache
+.vs/
+
+#NuGet package
+**/[Pp]ackages/*
