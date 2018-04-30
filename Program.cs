@@ -11,15 +11,15 @@ namespace RubikCubeImageRender
         static Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
         
         // Make it configurable
-        static int width = 400;
-        static int height = 400;
+        static int width = 100;
+        static int height = 100;
 
         static void initColorMap()
         {
             colorMap['R'] = Color.Red;
-            colorMap['G'] = Color.LawnGreen;
-            colorMap['B'] = Color.BlueViolet;
-            colorMap['O'] = Color.Orange;
+            colorMap['G'] = Color.FromArgb(0, 0xDD, 0);
+            colorMap['B'] = Color.FromArgb(0x00, 0x77, 0xFF);
+            colorMap['O'] = Color.FromArgb(0xFF, 0xA5, 0);
             colorMap['Y'] = Color.Yellow;
             colorMap['W'] = Color.White;
             colorMap['X'] = Color.Gray;
@@ -30,21 +30,21 @@ namespace RubikCubeImageRender
             // Create a Bitmap object from a file.
             Bitmap bitmap = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(bitmap);
-            Pen boardPen = new Pen(Color.DarkGray, 1);
+            Pen boardPen = new Pen(Color.Black, 1);
 
             for (int i = 0; i < colorCode.Length; i++)
             {
                 Char colorChar = colorCode[i];
                 Color color = colorMap[colorChar];
                 Point[] points = model.GetPolygen(i);
-                Point[] scaledPoints = GetScaledPoints(points);
+                PointF[] scaledPoints = GetScaledPoints(points);
                 graphics.FillPolygon(new SolidBrush(color), scaledPoints);
             }
 
             for (int i = 0; i < model.GetPolygenCount(); i++)
             {
                 Point[] points = model.GetPolygen(i);
-                Point[] scaledPoints = GetScaledPoints(points);
+                PointF[] scaledPoints = GetScaledPoints(points);
                 graphics.DrawPolygon(boardPen, scaledPoints);
             }
 
@@ -52,13 +52,13 @@ namespace RubikCubeImageRender
             bitmap.Save(filename);
         }
 
-        static Point[] GetScaledPoints(Point[] points)
+        static PointF[] GetScaledPoints(Point[] points)
         {
-            Point[] scaledPoints = new Point[points.Length];
+            PointF[] scaledPoints = new PointF[points.Length];
             for (int pointIndex = 0; pointIndex < points.Length; pointIndex++)
             {
                 Point point = points[pointIndex];
-                Point scaledPoint = new Point(point.X * (width / 200), point.Y * (height / 200));
+                PointF scaledPoint = new PointF(point.X * (width / 200.0f), point.Y * (height / 200.0f));
                 scaledPoints[pointIndex] = scaledPoint;
             }
             return scaledPoints;
