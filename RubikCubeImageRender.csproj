@@ -58,9 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="models.cfg" />
+    <None Include="samples\models.cfg" />
     <None Include="packages.config" />
-    <None Include="rubik.dat" />
+    <None Include="samples\rubik.dat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
