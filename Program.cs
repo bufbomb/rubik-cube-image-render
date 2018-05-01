@@ -79,9 +79,8 @@ namespace RubikCubeImageRender
                 string line = sr.ReadLine();
                 while (line != null)
                 {
-                    string colorCode = line;
-                    string[] metaData = sr.ReadLine().Split(',');
-                    if (metaData.Length != 2)
+                    string[] metaData = line.Split(',');
+                    if (metaData.Length < 2)
                     {
                         throw new Exception("Invalid data");
                     }
@@ -92,6 +91,7 @@ namespace RubikCubeImageRender
                     {
                         throw new Exception("Invalid model name");
                     }
+                    string colorCode = sr.ReadLine();
                     drawAndSave(filename, model, colorCode);
                     line = sr.ReadLine();
                 }
