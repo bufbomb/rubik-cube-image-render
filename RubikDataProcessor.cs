@@ -11,8 +11,7 @@ namespace RubikCubeImageRender
         static Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
 
         // Make it configurable
-        static int width = 100;
-        static int height = 100;
+        const int DEFAULT_SIZE = 100;
         static bool inited = false;
         static void initColorMap()
         {
@@ -44,34 +43,39 @@ namespace RubikCubeImageRender
             }
             string filename = metaData[0].Trim();
             string modelName = metaData[1].Trim();
+            int size = DEFAULT_SIZE;
+            if (metaData.Length >= 3)
+            {
+                size = Int32.Parse(metaData[2]);
+            }
             Model model = models[modelName];
             if (model == null)
             {
                 throw new Exception("Invalid model name");
             }
-            drawAndSave(filename, model, colorLine);
+            drawAndSave(filename, model, colorLine, size);
         }
 
-        static void drawAndSave(string filename, Model model, string colorCode)
+        static void drawAndSave(string filename, Model model, string colorCode, int size)
         {
             // Create a Bitmap object from a file.
-            Bitmap bitmap = new Bitmap(width, height);
+            Bitmap bitmap = new Bitmap(size, size);
             Graphics graphics = Graphics.FromImage(bitmap);
-            Pen boardPen = new Pen(Color.Black, 1);
+            Pen boardPen = new Pen(Color.Black, size / 100);
 
             for (int i = 0; i < colorCode.Length; i++)
             {
                 Char colorChar = colorCode[i];
                 Color color = colorMap[colorChar];
                 Point[] points = model.GetPolygen(i);
-                PointF[] scaledPoints = GetScaledPoints(points);
+                PointF[] scaledPoints = GetScaledPoints(points, size);
                 graphics.FillPolygon(new SolidBrush(color), scaledPoints);
             }
 
             for (int i = 0; i < model.GetPolygenCount(); i++)
             {
                 Point[] points = model.GetPolygen(i);
-                PointF[] scaledPoints = GetScaledPoints(points);
+                PointF[] scaledPoints = GetScaledPoints(points, size);
                 graphics.DrawPolygon(boardPen, scaledPoints);
             }
 
@@ -79,13 +83,13 @@ namespace RubikCubeImageRender
             bitmap.Save(filename);
         }
 
-        static PointF[] GetScaledPoints(Point[] points)
+        static PointF[] GetScaledPoints(Point[] points, int size)
         {
             PointF[] scaledPoints = new PointF[points.Length];
             for (int pointIndex = 0; pointIndex < points.Length; pointIndex++)
             {
                 Point point = points[pointIndex];
-                PointF scaledPoint = new PointF(point.X * (width / 200.0f), point.Y * (height / 200.0f));
+                PointF scaledPoint = new PointF(point.X * (size / 200.0f), point.Y * (size / 200.0f));
                 scaledPoints[pointIndex] = scaledPoint;
             }
             return scaledPoints;
