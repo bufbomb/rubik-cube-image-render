@@ -26,3 +26,5 @@ large.png, model_1, 400
 BBBBBBBBBRRRRRRRRRYYYYYYYYY
 arrow.png, model_1, 400
 BBBBBBBBBRRRRRRRRRYYYYYYYYY | 10->12
+top.png, model_2, 200
+WWWWWWWWW | 4->6,6->8,8->4
