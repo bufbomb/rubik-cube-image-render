@@ -34,7 +34,7 @@ namespace RubikCubeImageRender
             initColorMap();
         }
 
-        public void Process(string metaLine, string colorLine)
+        public void Process(string metaLine, string dataLine)
         {
             string[] metaData = metaLine.Split(',');
             if (metaData.Length < 2)
@@ -53,10 +53,14 @@ namespace RubikCubeImageRender
             {
                 throw new Exception("Invalid model name");
             }
-            drawAndSave(filename, model, colorLine, size);
+            string[] data = dataLine.Split('|');
+            string colorString = data[0].Trim();
+            string optString = data.Length == 2 ? data[1].Trim() : null;
+
+            drawAndSave(filename, model, colorString, size, optString);
         }
 
-        static void drawAndSave(string filename, Model model, string colorCode, int size)
+        static void drawAndSave(string filename, Model model, string colorCode, int size, string optString)
         {
             // Create a Bitmap object from a file.
             Bitmap bitmap = new Bitmap(size, size);
@@ -79,8 +83,61 @@ namespace RubikCubeImageRender
                 graphics.DrawPolygon(boardPen, scaledPoints);
             }
 
+            if (optString != null)
+            {
+                string[] optStringArray = optString.Split(',');
+                foreach (string optS in optStringArray)
+                {
+                    string[] numStr = optS.Split(new string[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
+                    int first = int.Parse(numStr[0]);
+                    int second = int.Parse(numStr[1]);
+                    Point[] points = model.GetPolygen(first - 1);
+                    PointF[] scaledPoints = GetScaledPoints(points, size);
+                    PointF start = GetCenter(scaledPoints);
+                    points = model.GetPolygen(second - 1);
+                    scaledPoints = GetScaledPoints(points, size);
+                    PointF end = GetCenter(scaledPoints);
+                    drawArrow(start, end, graphics, boardPen, size);
+                }
+            }
+
             // Save
             bitmap.Save(filename);
+        }
+
+        static void drawArrow(PointF start, PointF end, Graphics g, Pen pen, int size)
+        {
+            int arrowSize = size / 100 * 4;
+            g.DrawLine(pen, start, end);
+            double radians = 0.0;
+            if (start.X == end.X)
+            {
+                radians = Math.PI / 2 * (end.Y > start.Y ? 1 : -1);
+            } else
+            {
+                radians = Math.Atan2(end.Y - start.Y, end.X - start.X);
+            }
+            PointF[] arrow = new PointF[] {
+                new PointF((float)(end.X - Math.Sin(radians) * arrowSize / 2), (float)(end.Y + Math.Cos(radians) * arrowSize / 2)),
+                new PointF((float)(end.X + Math.Sin(radians) * arrowSize / 2), (float)(end.Y - Math.Cos(radians) * arrowSize / 2)),
+                new PointF((float)(end.X + Math.Cos(radians) * arrowSize / 2), (float)(end.Y + Math.Sin(radians) * arrowSize / 2))
+            };
+            g.FillPolygon(new SolidBrush(Color.Black), arrow);
+        }
+
+        static PointF GetCenter(PointF[] points)
+        {
+            PointF p = new PointF();
+            float x = 0;
+            float y = 0;
+            foreach (PointF point in points)
+            {
+                x += point.X;
+                y += point.Y;
+            }
+            p.X = x / points.Length;
+            p.Y = y / points.Length;
+            return p;
         }
 
         static PointF[] GetScaledPoints(Point[] points, int size)
