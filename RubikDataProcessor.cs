@@ -132,7 +132,7 @@ namespace RubikCubeImageRender
 
         static void drawArrow(PointF start, PointF end, Graphics g, Pen pen, int size, ArrowFlag flag)
         {
-            int arrowSize = size / 100 * 4;
+            int arrowSize = size / 100 * 6;
             double radians = 0.0;
             if (start.X == end.X)
             {
