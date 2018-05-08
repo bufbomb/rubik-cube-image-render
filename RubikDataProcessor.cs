@@ -6,6 +6,12 @@ namespace RubikCubeImageRender
 {
     public class RubikDataProcessor
     {
+        enum ArrowFlag {
+            DEFAULT = 0,
+            EXTEND_START = 1,
+            SHRINK_START = 2,
+        }
+
         Dictionary<String, Model> models;
 
         static Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
@@ -88,7 +94,26 @@ namespace RubikCubeImageRender
                 string[] optStringArray = optString.Split(',');
                 foreach (string optS in optStringArray)
                 {
-                    string[] numStr = optS.Split(new string[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
+                    String arrow = null;
+                    ArrowFlag flag = ArrowFlag.DEFAULT;
+                    if (optS.Contains("--->"))
+                    {
+                        arrow = "--->";
+                        flag = ArrowFlag.EXTEND_START;
+                    } else if (optS.Contains("-->"))
+                    {
+                        arrow = "-->";
+                        flag = ArrowFlag.DEFAULT;
+                    } else if (optS.Contains("->"))
+                    {
+                        arrow = "->";
+                        flag = ArrowFlag.SHRINK_START;
+                    } else
+                    {
+                        throw new Exception("failed to parse data file.");
+                    }
+
+                    string[] numStr = optS.Split(new string[] { arrow }, StringSplitOptions.RemoveEmptyEntries);
                     int first = int.Parse(numStr[0]);
                     int second = int.Parse(numStr[1]);
                     Point[] points = model.GetPolygen(first - 1);
@@ -97,7 +122,7 @@ namespace RubikCubeImageRender
                     points = model.GetPolygen(second - 1);
                     scaledPoints = GetScaledPoints(points, size);
                     PointF end = GetCenter(scaledPoints);
-                    drawArrow(start, end, graphics, boardPen, size);
+                    drawArrow(start, end, graphics, boardPen, size, flag);
                 }
             }
 
@@ -105,10 +130,9 @@ namespace RubikCubeImageRender
             bitmap.Save(filename);
         }
 
-        static void drawArrow(PointF start, PointF end, Graphics g, Pen pen, int size)
+        static void drawArrow(PointF start, PointF end, Graphics g, Pen pen, int size, ArrowFlag flag)
         {
             int arrowSize = size / 100 * 4;
-            g.DrawLine(pen, start, end);
             double radians = 0.0;
             if (start.X == end.X)
             {
@@ -117,6 +141,13 @@ namespace RubikCubeImageRender
             {
                 radians = Math.Atan2(end.Y - start.Y, end.X - start.X);
             }
+            int adjust = (flag == ArrowFlag.DEFAULT ? 0 : (flag == ArrowFlag.EXTEND_START ? 1 : -1)) * arrowSize;
+            g.DrawLine(
+                pen, 
+                (float)(start.X - adjust * Math.Cos(radians)),
+                (float)(start.Y - adjust * Math.Sin(radians)),
+                end.X,
+                end.Y);
             PointF[] arrow = new PointF[] {
                 new PointF((float)(end.X - Math.Sin(radians) * arrowSize / 2), (float)(end.Y + Math.Cos(radians) * arrowSize / 2)),
                 new PointF((float)(end.X + Math.Sin(radians) * arrowSize / 2), (float)(end.Y - Math.Cos(radians) * arrowSize / 2)),
