@@ -17,7 +17,7 @@ namespace RubikCubeImageRender
         {
             Dictionary<String, Model> models = ConfigLoader.readModels(opts.ModelFile);
             RubikDataProcessor processor = new RubikDataProcessor(models, opts.OutputFolder);
-            using (StreamReader sr = new StreamReader(opts.DataFile))
+            using (StreamReader sr = new RubikDataReader(opts.DataFile))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)

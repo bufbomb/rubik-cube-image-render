@@ -7,21 +7,11 @@ namespace RubikCubeImageRender
 {
     public class ConfigLoader
     {
-        static void readPoints(Model model, StreamReader sr)
+        static void constructModel(Model model, List<string> pointsLine, List<string> arrowsLine)
         {
             List<Point> points = new List<Point>();
-            String line = sr.ReadLine();
-            while (line != null)
+            foreach (string line in pointsLine)
             {
-                if (line.Equals("end"))
-                {
-                    break;
-                }
-                if (line.StartsWith("#"))
-                {
-                    line = sr.ReadLine();
-                    continue;
-                }
                 String[] pointStrings = line.Split(';');
                 for (int i = 0; i < pointStrings.Length; i++)
                 {
@@ -44,7 +34,17 @@ namespace RubikCubeImageRender
                 }
                 model.AddPolygen(points.ToArray());
                 points.Clear();
-                line = sr.ReadLine();
+            }
+            foreach (string line in arrowsLine)
+            {
+                string[] arrowStrings = line.Split('=');
+                if (arrowStrings.Length != 2)
+                {
+                    throw new Exception("Invalid arrow line");
+                }
+                string rep = arrowStrings[0].Trim();
+                string data = arrowStrings[1].Trim();
+                model.AddArrow(rep, data);
             }
         }
 
@@ -52,32 +52,40 @@ namespace RubikCubeImageRender
         {
             String modelName = null;
             String line = sr.ReadLine();
-            while (line != null)
-            {
-                modelName = line.Trim();
-                if (modelName.Equals(""))
-                {
-                    line = sr.ReadLine();
-                }
-                else
-                {
-                    break;
-                }
-            }
-            if (String.IsNullOrEmpty(modelName))
+            if (line == null)
             {
                 return null;
             }
-
+            modelName = line.Trim();
             Model model = new Model(modelName);
-            readPoints(model, sr);
+            List<string> pointsLine = new List<string>();
+            List<string> arrowsLine = new List<string>();
+            bool readArrow = false;
+            while (true)
+            {
+                line = sr.ReadLine();
+                if (line.StartsWith("end"))
+                {
+                    break;
+                } else if (line.Equals("arrow"))
+                {
+                    readArrow = true;
+                } else if (readArrow)
+                {
+                    arrowsLine.Add(line);
+                } else
+                {
+                    pointsLine.Add(line);
+                }
+            }
+            constructModel(model, pointsLine, arrowsLine);
             return model;
         }
 
         public static Dictionary<String, Model> readModels(string filename)
         {
             Dictionary<String, Model> models = new Dictionary<string, Model>();
-            using (StreamReader sr = new StreamReader(filename))
+            using (StreamReader sr = new RubikDataReader(filename))
             {
                 Model model = readModel(sr);
                 while (model != null)

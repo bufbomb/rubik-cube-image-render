@@ -8,6 +8,7 @@ namespace RubikCubeImageRender
     {
         string name;
         List<Point[]> polygens = new List<Point[]>();
+        Dictionary<String, String> arrows = new Dictionary<string, string>();
 
         public Model(string name)
         {
@@ -35,6 +36,18 @@ namespace RubikCubeImageRender
         public int GetPolygenCount()
         {
             return polygens.Count;
+        }
+
+        public void AddArrow(string rep, string arrow)
+        {
+            arrows.Add(rep, arrow);
+        }
+
+        public string GetArrow(string rep)
+        {
+            string result = null;
+            arrows.TryGetValue(rep, out result);
+            return result;
         }
 
         public void PrintDebug()
