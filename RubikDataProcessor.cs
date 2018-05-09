@@ -99,6 +99,11 @@ namespace RubikCubeImageRender
 
             if (optString != null)
             {
+                string modelArrow = model.GetArrow(optString);
+                if (modelArrow != null)
+                {
+                    optString = modelArrow;
+                }
                 string[] optStringArray = optString.Split(',');
                 foreach (string optS in optStringArray)
                 {
