@@ -16,7 +16,7 @@ namespace RubikCubeImageRender
         private static void RunOptionsAndReturnExitCode(Options opts)
         {
             Dictionary<String, Model> models = ConfigLoader.readModels(opts.ModelFile);
-            RubikDataProcessor processor = new RubikDataProcessor(models);
+            RubikDataProcessor processor = new RubikDataProcessor(models, opts.OutputFolder);
             using (StreamReader sr = new StreamReader(opts.DataFile))
             {
                 string line;

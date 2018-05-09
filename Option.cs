@@ -10,5 +10,8 @@ namespace RubikCubeImageRender
 
         [Option("data", Default = "rubik.dat", HelpText = "Input data file")]
         public string DataFile { get; set; }
+
+        [Option("output", Default = null, HelpText = "Image output folder")]
+        public string OutputFolder { get; set; }
     }
 }

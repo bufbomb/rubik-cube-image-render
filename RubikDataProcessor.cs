@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace RubikCubeImageRender
 {
@@ -13,6 +14,7 @@ namespace RubikCubeImageRender
         }
 
         Dictionary<String, Model> models;
+        string outputFolder;
 
         static Dictionary<Char, Color> colorMap = new Dictionary<char, Color>();
 
@@ -34,9 +36,10 @@ namespace RubikCubeImageRender
             }
         }
 
-        public RubikDataProcessor(Dictionary<String, Model> models)
+        public RubikDataProcessor(Dictionary<String, Model> models, string outputFolder)
         {
             this.models = models;
+            this.outputFolder = outputFolder;
             initColorMap();
         }
 
@@ -63,6 +66,11 @@ namespace RubikCubeImageRender
             string colorString = data[0].Trim();
             string optString = data.Length == 2 ? data[1].Trim() : null;
 
+            if (outputFolder != null)
+            {
+                filename = outputFolder + "/" + filename;
+                Directory.CreateDirectory(outputFolder);
+            }
             drawAndSave(filename, model, colorString, size, optString);
         }
 
