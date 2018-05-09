@@ -62,6 +62,7 @@
     <None Include="App.config" />
     <None Include="samples\models.cfg" />
     <None Include="packages.config" />
+    <None Include="samples\notation.dat" />
     <None Include="samples\rubik.dat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
