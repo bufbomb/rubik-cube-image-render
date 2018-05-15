@@ -84,16 +84,14 @@ namespace RubikCubeImageRender
             for (int i = 0; i < colorCode.Length; i++)
             {
                 Char colorChar = colorCode[i];
+                if (colorChar == '_')
+                {
+                    continue;
+                }
                 Color color = colorMap[colorChar];
                 Point[] points = model.GetPolygen(i);
                 PointF[] scaledPoints = GetScaledPoints(points, size);
                 graphics.FillPolygon(new SolidBrush(color), scaledPoints);
-            }
-
-            for (int i = 0; i < model.GetPolygenCount(); i++)
-            {
-                Point[] points = model.GetPolygen(i);
-                PointF[] scaledPoints = GetScaledPoints(points, size);
                 graphics.DrawPolygon(boardPen, scaledPoints);
             }
 
