@@ -6,8 +6,59 @@ namespace RubikCubeImageRender
 {
     public class Model
     {
+
+        public enum EdgeType
+        {
+            NO_EDGE,
+            THIN_EDGE,
+            NORMAL_EDGE,
+            THICK_EDGE
+        }
+
+        public class Polygen
+        {
+            readonly Point[] points;
+            readonly EdgeType edgeType;
+
+            public Polygen(Point[] points) : this(points, EdgeType.NORMAL_EDGE)
+            {
+                ;
+            }
+
+            public Polygen(Point[] points, EdgeType type)
+            {
+                this.points = points;
+                this.edgeType = type;
+            }
+
+            public Point[] Points
+            {
+                get
+                {
+                    return points;
+                }
+            }
+
+            public int GetStrikeSize(int defaultSize)
+            {
+                switch (edgeType)
+                {
+                    case EdgeType.NO_EDGE:
+                        return 0;
+                    case EdgeType.THIN_EDGE:
+                        return 1;
+                    case EdgeType.THICK_EDGE:
+                        return defaultSize + (defaultSize >> 1);
+                    default:
+                        return defaultSize;
+                }
+            }
+        }
+
+
+
         string name;
-        List<Point[]> polygens = new List<Point[]>();
+        List<Polygen> polygens = new List<Polygen>();
         Dictionary<String, String> arrows = new Dictionary<string, string>();
 
         public Model(string name)
@@ -17,12 +68,17 @@ namespace RubikCubeImageRender
 
         public string Name { get => name;}
 
-        public void AddPolygen(Point[] polygen)
+        public void AddPolygen(Point[] points)
         {
-            polygens.Add(polygen);
+            polygens.Add(new Polygen(points));
         }
 
-        public Point[] GetPolygen(int index)
+        public void AddPolygen(Point[] points, EdgeType type)
+        {
+            polygens.Add(new Polygen(points, type));
+        }
+
+        public Polygen GetPolygen(int index)
         {
             if (index < 0 || index >= polygens.Count)
             {

@@ -12,11 +12,12 @@ namespace RubikCubeImageRender
             List<Point> points = new List<Point>();
             foreach (string line in pointsLine)
             {
-                String[] pointStrings = line.Split(';');
+                string[] parts = line.Split('|');
+                string[] pointStrings = parts[0].Trim().Split(';');
                 for (int i = 0; i < pointStrings.Length; i++)
                 {
-                    String pointString = pointStrings[i];
-                    String[] pos = pointString.Split(',');
+                    string pointString = pointStrings[i];
+                    string[] pos = pointString.Split(',');
                     if (pos.Length != 2)
                     {
                         throw new Exception("Invalid model config file. at " + line);
@@ -32,7 +33,15 @@ namespace RubikCubeImageRender
                         throw new Exception("Invalid model config file. at " + line);
                     }
                 }
-                model.AddPolygen(points.ToArray());
+                if (parts.Length == 1)
+                {
+                    model.AddPolygen(points.ToArray());
+                } else
+                {
+                    model.AddPolygen(
+                        points.ToArray(), 
+                        (Model.EdgeType)Enum.Parse(typeof(Model.EdgeType), parts[1].Trim().ToUpper()));
+                }
                 points.Clear();
             }
             foreach (string line in arrowsLine)

@@ -79,8 +79,7 @@ namespace RubikCubeImageRender
             // Create a Bitmap object from a file.
             Bitmap bitmap = new Bitmap(size, size);
             Graphics graphics = Graphics.FromImage(bitmap);
-            Pen boardPen = new Pen(Color.Black, size / 100);
-
+            int defaultStrike = size / 100;
             for (int i = 0; i < colorCode.Length; i++)
             {
                 Char colorChar = colorCode[i];
@@ -89,14 +88,21 @@ namespace RubikCubeImageRender
                     continue;
                 }
                 Color color = colorMap[colorChar];
-                Point[] points = model.GetPolygen(i);
+                Model.Polygen polygen = model.GetPolygen(i);
+                Point[] points = polygen.Points;
                 PointF[] scaledPoints = GetScaledPoints(points, size);
                 graphics.FillPolygon(new SolidBrush(color), scaledPoints);
-                graphics.DrawPolygon(boardPen, scaledPoints);
+                int strike = polygen.GetStrikeSize(defaultStrike);
+                if (strike > 0)
+                {
+                    graphics.DrawPolygon(new Pen(Color.Black, strike), scaledPoints);
+                }
             }
 
             if (optString != null)
             {
+                Pen arrowPen = new Pen(Color.Black, defaultStrike);
+
                 string modelArrow = model.GetArrow(optString);
                 if (modelArrow != null)
                 {
@@ -127,13 +133,15 @@ namespace RubikCubeImageRender
                     string[] numStr = optS.Split(new string[] { arrow }, StringSplitOptions.RemoveEmptyEntries);
                     int first = int.Parse(numStr[0]);
                     int second = int.Parse(numStr[1]);
-                    Point[] points = model.GetPolygen(first - 1);
+                    Model.Polygen firstPolygen = model.GetPolygen(first - 1);
+                    Point[] points = firstPolygen.Points;
                     PointF[] scaledPoints = GetScaledPoints(points, size);
                     PointF start = GetCenter(scaledPoints);
-                    points = model.GetPolygen(second - 1);
+                    Model.Polygen secondPolygen = model.GetPolygen(second - 1);
+                    points = secondPolygen.Points;
                     scaledPoints = GetScaledPoints(points, size);
                     PointF end = GetCenter(scaledPoints);
-                    drawArrow(start, end, graphics, boardPen, size, flag);
+                    drawArrow(start, end, graphics, arrowPen, size, flag);
                 }
             }
 
