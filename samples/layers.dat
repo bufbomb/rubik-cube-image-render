@@ -42,3 +42,7 @@ XYXYYYXYXY_Y___Y_Y___
 XYXYYYXYX__Y___Y__Y_Y
 5-finger-check.png, model_2
 XYRYYYXYXXXXXXRXXRXXR
+7-pos-1.png, model_2
+WWWWWWWWWX_XX_XX_XXXX | 2->6, 6->8, 8->2
+7-pos-2.png, model_2
+WWWWWWWWWX_XX_XX_XXXX | 2->8, 8->6, 6->2
