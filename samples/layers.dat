@@ -1,0 +1,44 @@
+﻿0-final.png, model_1
+XXXXRXXXXXXXXBXXXXXXXXWXXXX
+1-final.png, model_1
+XXXXRXXRXXXXXBXXBXXWXWWWXWX
+2-final.png, model_1
+BBBXBXXXXRRRXRXXXXXXXXYXXXX
+3-final.png, model_1
+BBBBBBXXXRRRRRRXXXXXXXYXXXX
+4-final.png, model_1
+BBBBBBXXXRRRRRRXXXXYXYYYXYX
+5-final.png, model_1
+BBBBBBXXXRRRRRRXXXYYYYYYYYY
+6-final.png, model_1
+BBBBBBBXBRRRRRRRXRYYYYYYYYY
+7-final.png, model_1
+BBBBBBBBBRRRRRRRRRYYYYYYYYY
+2-pos.png, model_1
+XBXXBXXXWXRXXRXBXXXXRXYXXXX
+3-pos-1.png, model_1
+BBBXBXXBXRRRXRXXXXXRXXYXXXX
+3-pos-2.png, model_1
+BBBXBXXXXRRRXRXXRXXXXXYBXXX
+4-pos-1.png, model_1
+BBBXBXXXXRRRXRXXXXXYXXYXXYX
+4-pos-2.png, model_1
+BBBXBXXXXRRRXRXXXXXXXXYYXYX
+4-pos-3.png, model_1
+BBBXBXXXXRRRXRXXXXXXXXYXXXX
+5-pos-1.png, model_2
+XYYYYYXYX_____Y__Y__Y
+5-pos-2.png, model_2
+XYYYYYXYXY_____Y__Y__
+5-pos-3.png, model_2
+YYXYYYXYY___Y____Y___
+5-pos-4.png, model_2
+YYXYYYYYX___Y_Y______
+5-pos-5.png, model_2
+XYXYYYYYY___Y_______Y
+5-pos-6.png, model_2
+XYXYYYXYXY_Y___Y_Y___
+5-pos-7.png, model_2
+XYXYYYXYX__Y___Y__Y_Y
+5-finger-check.png, model_2
+XYRYYYXYXXXXXXRXXRXXR

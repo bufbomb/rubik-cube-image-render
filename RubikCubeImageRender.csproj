@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="samples\layers.dat" />
     <None Include="samples\models.cfg" />
     <None Include="packages.config" />
     <None Include="samples\notation.dat" />
