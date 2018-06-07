@@ -12,3 +12,6 @@ The data file defines the output file name, the model and the color it will use 
 ![](https://github.com/bufbomb/rubik-cube-image-render/blob/master/preview/1.png)
 
 ![](https://github.com/bufbomb/rubik-cube-image-render/blob/master/preview/2.png)
+
+## Sample site
+http://cqhang.me/post/rubik-layer-algorithm/
